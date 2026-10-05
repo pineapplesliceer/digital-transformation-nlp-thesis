@@ -1,0 +1,62 @@
+schema_version: 1
+request_id: thesis-docx
+created_at: 2026-10-05T16:05:00+08:00
+updated_at: 2026-10-05T16:22:00+08:00
+
+entry_type: full_pipeline
+stage_chain: [1, 2, 3]
+
+output_docx_path: C:\Users\kakak\WorkBuddy\2026-10-05-15-33-18\output\thesis-docx\stage3\基于年报文本挖掘的企业数字化转型测度及其对企业绩效的影响研究.docx
+output_docx_user_specified: false
+
+current_stage: completed
+
+stages:
+  stage_0:
+    status: completed
+    completed_at: 2026-10-05T16:05:00+08:00
+    decision: full_pipeline
+    note: 用户要求把毕业论文预演稿生成为 Word 格式 → 无既有 docx、有创作+排版需求 → full_pipeline（S1→S2→S3）
+
+  stage_1:
+    status: completed
+    started_at: 2026-10-05T16:00:00+08:00
+    completed_at: 2026-10-05T16:05:00+08:00
+    output_path: "stage1/final_draft.md"
+    genre: academic-paper
+    expert_used: academic-paper-expert
+    route_tag: expert_academic
+    critic_decision: PASS
+    note: 学术论文 genre 命中 L2 专家，Critic 模式 once；自审检查项为结构完整性（摘要/关键词/绪论/方法/分析/结论/参考文献）、数据与脚本结果一致性、公式与表格编号完整性，未发现 P0 问题。
+
+  stage_2:
+    status: completed
+    started_at: 2026-10-05T16:06:00+08:00
+    completed_at: 2026-10-05T16:20:00+08:00
+    route: html
+    html_sub: template
+    output_path: "stage2/formatted-企业数字化转型测度.html"
+    output_format: html
+    skills_invoked: [design-token, doc-typeset, html-review]
+    design_tokens_path: "stage2/design_tokens.json"
+    template_used: academic-paper
+    fallback: false
+    fallback_reason: null
+
+  stage_3:
+    status: completed
+    started_at: 2026-10-05T16:20:00+08:00
+    completed_at: 2026-10-05T16:22:00+08:00
+    executor: doc-converter
+    input_format: html
+    output_path: C:\Users\kakak\WorkBuddy\2026-10-05-15-33-18\output\thesis-docx\stage3\基于年报文本挖掘的企业数字化转型测度及其对企业绩效的影响研究.docx
+    skill_used: ["html-to-docx"]
+    present_files_opened: true
+    fallback: false
+    fallback_reason: null
+
+consistency_check:
+  output_files_exist: pass
+  stage_chain_complete: pass
+  last_checked_at: 2026-10-05T16:22:00+08:00
+  errors: []

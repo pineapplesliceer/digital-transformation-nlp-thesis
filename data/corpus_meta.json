@@ -1,0 +1,11 @@
+{
+  "n_firm": 180,
+  "years": [
+    2015,
+    2023
+  ],
+  "n_doc": 1620,
+  "seed": 20260329,
+  "corpus": "synthetic MD&A corpus (预演用)",
+  "gen_time": "2026-10-05 16:13:35"
+}

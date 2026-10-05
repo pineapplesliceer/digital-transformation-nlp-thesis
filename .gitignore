@@ -1,0 +1,11 @@
+# 可再生的批量中间语料（执行 python run_all.py s0 s1 s2 重建）
+data/raw_text/
+data/clean_text/
+data/tokens/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+
+# 内部工作记忆，不纳入公开仓库
+.workbuddy/

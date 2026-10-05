@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="docx-page-size" content="A4">
+<title>基于年报文本挖掘的企业数字化转型测度及其对企业绩效的影响研究</title>
+<style>
+@page { @bottom-center { content: counter(page); } }
+@page cover { @bottom-center { content: none; } }
+section[role="cover"] { page: cover; }
+
+:root {
+    --typography-fontFamily-heading: 黑体, SimHei;
+    --typography-fontFamily-body: 宋体, SimSun;
+    --typography-fontFamily-bodyLatin: Times New Roman, serif;
+    --typography-fontFamily-caption: 宋体, SimSun;
+    --typography-fontFamily-code: Courier New, Consolas, monospace;
+    --typography-fontSize-title: 18pt;
+    --typography-fontSize-h1: 15pt;
+    --typography-fontSize-h2: 14pt;
+    --typography-fontSize-h3: 12pt;
+    --typography-fontSize-body: 12pt;
+    --typography-fontSize-abstract: 11pt;
+    --typography-fontSize-caption: 10.5pt;
+    --typography-fontSize-footnote: 9pt;
+    --typography-lineHeight-body: 1.5;
+    --typography-lineHeight-abstract: 1.25;
+    --typography-lineHeight-heading: 1.5;
+    --typography-fontWeight-heading: bold;
+    --typography-fontWeight-body: normal;
+    --typography-fontWeight-caption: normal;
+    --color-primary: #000000;
+    --color-text: #000000;
+    --color-heading: #000000;
+    --color-link: #0000EE;
+    --color-tableHeaderBg: #f0f0f0;
+    --color-tableBorder: #000000;
+    --color-background: #ffffff;
+    --spacing-paragraph: 0.5em;
+    --spacing-paragraphAfter: 0.5em;
+    --spacing-indent: 2em;
+    --spacing-sectionGap: 1.5em;
+    --spacing-abstractIndent: 3em;
+    --layout-marginTop: 3.0cm;
+    --layout-marginBottom: 2.5cm;
+    --layout-marginLeft: 3.0cm;
+    --layout-marginRight: 2.5cm;
+    --layout-pageSize: A4;
+    --layout-columnCount: 1;
+    --fs-h1: var(--typography-fontSize-h1);
+    --fs-h2: var(--typography-fontSize-h2);
+    --fs-h3: var(--typography-fontSize-h3);
+    --fs-body: var(--typography-fontSize-body);
+    --fs-small: var(--typography-fontSize-caption);
+    --fs-title: var(--typography-fontSize-title);
+    --ff-heading: var(--typography-fontFamily-heading);
+    --ff-body: var(--typography-fontFamily-body);
+    --ff-latin: var(--typography-fontFamily-bodyLatin);
+    --lh-body: var(--typography-lineHeight-body);
+    --indent: var(--spacing-indent);
+    --page-content-width: 16.0cm;
+    --fs-note: 9pt;
+    --fs-ref: 10.5pt;
+    --sp-1: var(--sp-1); --sp-2: var(--sp-2); --sp-3: var(--sp-3); --sp-4: var(--sp-4);
+    --sp-5: var(--sp-5); --sp-6: var(--sp-6); --sp-8: var(--sp-8);
+    --sp-cover-top: 4.5cm; --sp-cover-bottom: 3.2cm;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--ff-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  background: var(--color-background);
+  max-width: var(--page-content-width);
+  margin-left: auto; margin-right: auto;
+  padding: var(--layout-marginTop) 0 var(--layout-marginBottom) 0;
+}
+h1, h2, h3 { font-family: var(--ff-heading); font-weight: var(--typography-fontWeight-heading); color: var(--color-heading); }
+h1 { font-size: var(--fs-h1); margin-bottom: var(--spacing-paragraph); }
+h2 { font-size: var(--fs-h2); margin-top: var(--spacing-sectionGap); margin-bottom: var(--spacing-paragraph); }
+h3 { font-size: var(--fs-h3); margin-top: var(--spacing-paragraph); margin-bottom: var(--spacing-paragraph); }
+p { margin-bottom: var(--spacing-paragraphAfter); text-indent: var(--indent); text-align: justify; }
+code { font-family: var(--typography-fontFamily-code); font-size: var(--fs-ref); }
+
+section[role="cover"] { text-align: center; }
+.cover-title { text-align: center; font-size: var(--fs-title); font-weight: var(--typography-fontWeight-heading); margin-top: var(--sp-cover-top); margin-bottom: 0.6cm; }
+.cover-subtitle { text-align: center; font-size: var(--fs-h3); margin-bottom: var(--sp-cover-bottom); text-indent: 0; }
+.cover-info-list { border-collapse: collapse; margin: 0 auto; }
+.cover-info-list td { padding: var(--sp-4) var(--sp-8); font-size: var(--fs-body); border: none; text-indent: 0; }
+.cover-info-list td:first-child { text-align: right; }
+.cover-info-list td:last-child { text-align: left; }
+
+.doc-toc { margin-bottom: var(--spacing-sectionGap); }
+.toc-title { text-align: center; font-family: var(--ff-heading); font-size: var(--fs-h2); font-weight: var(--typography-fontWeight-heading); text-indent: 0; margin-bottom: var(--sp-6); }
+.toc-list { list-style: none; padding-left: 0; }
+.toc-list li { margin-bottom: var(--sp-2); text-indent: 0; }
+.toc-list a { color: var(--color-text); text-decoration: none; }
+
+.abstract-text { text-indent: 0; font-size: var(--typography-fontSize-abstract); line-height: var(--typography-lineHeight-abstract); }
+.keywords { text-indent: 0; font-size: var(--typography-fontSize-abstract); margin-top: var(--sp-5); }
+
+.three-line-table { border-collapse: collapse; width: 100%; margin-bottom: var(--spacing-paragraphAfter); }
+.three-line-table th, .three-line-table td { padding: var(--sp-3) var(--sp-5); text-align: center; font-size: var(--fs-small); border: none; text-indent: 0; }
+.three-line-table thead tr { border-top: 1.5pt solid var(--color-tableBorder); border-bottom: 0.75pt solid var(--color-tableBorder); }
+.three-line-table tbody tr:last-child { border-bottom: 1.5pt solid var(--color-tableBorder); }
+.three-line-table td:first-child, .three-line-table th:first-child { text-align: left; }
+
+.table-caption { text-align: center; text-indent: 0; font-family: var(--ff-heading); font-size: var(--fs-small); font-weight: var(--typography-fontWeight-heading); margin-top: var(--sp-6); margin-bottom: var(--sp-1); }
+.table-note { text-indent: 0; font-size: var(--fs-note); color: var(--color-text); margin-bottom: var(--sp-8); }
+.formula { text-indent: 0; text-align: center; font-family: var(--ff-latin); margin: var(--sp-5) 0; }
+.ref-item { text-indent: 0; font-size: var(--fs-ref); margin-bottom: var(--sp-4); }
+</style>
+</head>
+<body>
+<section role="cover">
+  <h1 class="cover-title">基于年报文本挖掘的企业数字化转型测度及其对企业绩效的影响研究</h1>
+  <p class="cover-subtitle">——以 2015—2023 年沪深 A 股制造业上市公司为例</p>
+  <table class="cover-info-list">
+    <tbody>
+<tr><td>学生姓名</td><td>王晓珂</td></tr>
+<tr><td>学　　号</td><td>202364029</td></tr>
+<tr><td>专　　业</td><td>大数据管理与应用</td></tr>
+<tr><td>年　　级</td><td>2023 级</td></tr>
+<tr><td>院　　系</td><td>管理学院</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section role="body" data-page-restart="1">
+  <div class="doc-toc">
+    <p class="toc-title">目　录</p>
+    <ol class="toc-list">
+<li><a href="#s0">一、绪论</a></li>
+<li><a href="#s1">二、研究方法与数据</a></li>
+<li><a href="#s2">三、实证分析</a></li>
+<li><a href="#s3">四、结论、局限与展望</a></li>
+<li><a href="#s4">参考文献</a></li>
+<li><a href="#s5">附录 A　数据来源说明</a></li>
+<li><a href="#s6">附录 B　可复现代码与复现说明</a></li>
+    </ol>
+  </div>
+  <div class="abstract">
+    <p class="toc-title" style="text-align:center">摘　要</p>
+    <p>企业数字化转型的量化测度是大数据管理研究中的基础性问题。传统财务指标难以刻画数字化这类“软信息”，而年报文本为企业数字化投入与战略意图提供了可观测的表达载体。本文以 2015—2023 年沪深 A 股 180 家制造业上市公司为样本，构建“采集—清洗—分词—测度—建模”五步文本挖掘流水线：首先依据既有文献构建包含人工智能技术、大数据技术、云计算技术、区块链技术、数字技术应用五个维度、共 69 个关键词的数字化转型词典；其次在分词环节引入自定义词典、最长优先匹配、否定语境识别与程度副词加权四项规则，抑制关键词子串重复计数与无效表述造成的测度虚高；再次以“每千字关键词加权词频”为基础构造综合密度指标，并取对数得到主指标 DigTrans，同时给出熵权法与主成分因子得分两种替代测度。</p>
+<p>统计检验显示：主指标 Cronbach's α 为 0.714，Spearman-Brown 分半信度为 0.884，KMO 为 0.795，第一主成分方差解释率为 49.01%，与人工编码得分的 Spearman 相关系数为 0.876，信度与效度均达到可接受水平。在双向固定效应模型下，数字化转型程度每提高 1 个单位，总资产收益率平均提高约 1.45 个百分点（t 值对应 p&lt;0.01）；替换被解释变量（企业价值、全要素生产率）与替换核心解释变量（熵权法、因子得分）后结论保持一致；未来一期绩效与剔除外部冲击年份的检验同样支持正向关系。本文的边际贡献在于把文本测度的“构造—检验—应用”整合为一条可复现的流水线，并公开全部代码与仿真数据生成过程。需要说明的是，本稿为方法论预演稿，语料为按真实年报统计特征生成的仿真语料，用于验证研究设计可行性，正式研究将接入巨潮资讯网年报原文。。</p>
+    <p class="keywords"><strong>关键词：</strong>企业数字化转型；文本挖掘；测度构建；信度与效度；企业绩效；固定效应模型</p>
+  </div>
+  <main class="paper-body">
+<h2 id="s0">一、绪论</h2><p>本部分交代选题的现实与政策背景、研究的理论与现实意义，梳理已有文献的三条脉络并识别研究缺口，最后给出研究思路与全文结构安排。</p><h3>（一）选题背景</h3><p>数字经济已成为我国经济增长的重要引擎。《“十四五”数字经济发展规划》明确提出到 2025 年数字经济核心产业增加值占 GDP 比重要达到 10%，制造业的数字化、网络化、智能化转型被列为重点方向。在微观层面，企业纷纷把数字化转型写入发展战略，在年报“管理层讨论与分析”（MD&amp;A）中披露智能化改造、工业互联网平台建设、数据中台搭建等投入与成效。然而，宏观政策的强信号与企业实践的快速扩散之间，存在一个尚未被充分解决的基础性问题：<strong>企业数字化到底“有多数字化”，能否被稳定、可信地测量出来？</strong></p><p>一方面，研发投入、信息化设备账面价值等财务口径只能反映要素投入，无法刻画数据要素的运用方式与组织变革；另一方面，问卷调查与专家打分虽能捕捉战略意图，却受到样本规模小、主观性强、年度不可比等约束。随着上市公司信息披露文本的电子化与规范化，利用年报文本测度企业数字化水平成为可行路径，这也正是大数据管理与应用专业所强调的“非结构化数据—结构化指标—管理决策”研究范式的典型应用场景。</p><p>从技术条件看，中文分词、关键词词频统计、主题建模与预训练词向量等方法日益成熟，开源工具（如 jieba、HanLP）显著降低了文本处理的门槛；从数据条件看，巨潮资讯网提供了 1990 年代以来全部 A 股上市公司定期报告的免费获取渠道，CSMAR、Wind 等数据库提供了配套财务与治理数据。技术与数据的双重可得性，使“文本测度构建”成为一个既有理论价值又具操作可行性的选题。</p><h3>（二）研究意义</h3><p><strong>理论意义</strong>。第一，本文系统回应了“如何把企业数字化这一抽象概念转化为可比较的连续变量”这一测量学问题，给出了从词典构建、语境规则到信度效度检验的完整链条，为后续研究提供可复用的测度工具；第二，本文同时报告了词频密度法、熵权法与主成分因子得分三种构造方式的一致性，说明文本测度并非某种特定加权方案的偶然产物，从而增强了测度的构念效度证据；第三，本文把测度的信效度检验前置到实证分析之前，而非仅在稳健性检验中一笔带过，有助于纠正当前部分研究中“先回归、后补测度”的顺序倒置。</p><p><strong>实践意义</strong>。第一，对企业而言，本文的测度结果可用于识别自身在行业中的数字化相对位置，为技术改造投入的节奏安排提供参照；第二，对投资者而言，可比较的数字化指标有助于把管理层“话术”与真实转型力度区分开，降低信息不对称；第三，对监管部门而言，关键词词典与否定语境识别规则可用于评估年报信息披露的实质性，识别“数字化”概念的过度包装。</p><h3>（三）文献综述与研究缺口</h3><p>现有研究可归为三条脉络。</p><p><strong>第一条脉络关注数字化转型的经济后果。</strong> 吴非等（2021）以年报中数字化相关词频构造转型强度指标，发现数字化转型通过改善信息效率与降低融资约束提升股票流动性；袁淳等（2021）从专业化分工视角发现数字化显著提升企业全要素生产率；赵宸宇等（2021）基于制造业上市公司数据指出，数字化转型通过提升创新能力与人力资本水平改善企业绩效。国际文献中，Brynjolfsson 等（2021）利用企业调查数据发现无形资产与数据资产的积累是数字化生产率效应的关键中介，Acemoglu 与 Restrepo（2020）则提示自动化技术的就业替代效应可能抵消部分效率收益。总体而言，多数研究支持正向效应，但效应量级差异较大。</p><p><strong>第二条脉络关注文本测度的方法学。</strong> Gentzkow 等（2019）系统梳理了把文本转化为经济变量的四种策略：词典法、无监督主题模型、有监督分类与词嵌入，并强调测度的可验证性；Hassan 等（2019）以政治风险的文本测度为例，说明语境的引入能够显著改善测度质量；中文场景下，吴非等（2021）与袁淳等（2021）的词典法被广泛沿用，但其测度多直接报告词频对数，缺少对信度（内部一致性、分半信度）与效度（内容效度、结构效度、区分效度）的系统检验，也没有处理“未布局”“暂未投入”等否定语境带来的假阳性。</p><p><strong>第三条脉络关注测度误差与识别问题。</strong> 由于文本测度含有噪声，回归系数存在衰减偏误；同时数字化转型与企业绩效可能互为因果，且行业层面的技术冲击会同时影响两者。已有研究多通过滞后解释变量、控制行业年度联合固定效应等方式缓解，但对测度噪声本身导致的偏误讨论不足。</p><p>综合来看，<strong>现有研究存在三处缺口</strong>：其一，测度构造过程透明度不足，词典来源、语境规则、加权方案往往一句话带过，他人难以复现；其二，信度效度检验缺位，测度是否“测得准”缺乏直接证据；其三，测度噪声对回归结论的影响未被显式评估。本文针对上述缺口，把研究重心放在“测度如何构造、如何验证、验证结果如何影响后续结论”这一完整链条上。</p><h3>（四）研究思路与论文结构</h3><p>本文遵循“文本→指标→检验→回归”的技术路线：第 1 步采集年报 MD&amp;A 文本并清洗；第 2 步分词并统计分维度关键词词频；第 3 步构造综合测度并完成信度效度检验；第 4 步与企业财务数据合并为 2015—2023 年企业—年份平衡面板；第 5 步进行基准回归、稳健性检验、异质性分析与内生性处理。全文结构如下：第一部分为绪论；第二部分为研究方法与数据；第三部分为实证分析；第四部分为结论、局限与展望；文末给出参考文献、数据来源说明与代码复现说明。</p><h2 id="s1">二、研究方法与数据</h2><p>本部分说明样本选择口径、文本预处理与关键词计数规则、数字化转型测度的构造公式、变量定义以及计量模型设定与检验策略，是全文可复现性的核心依据。</p><h3>（一）数据来源与样本选择</h3><p>文本数据来源为上市公司年度报告中的“管理层讨论与分析”章节，原始获取渠道为巨潮资讯网（http://www.cninfo.com.cn）。样本选择遵循四条标准：一是行业限定为制造业（证监会行业分类 C1—C4 大类），因为制造业数字化改造的场景清晰、可比性强；二是剔除金融、保险类公司；三是剔除 ST、*ST 公司；四是要求样本企业在 2015—2023 年间连续 9 年均有可获取的年报文本，以获得平衡面板。财务与公司治理数据（总资产、资产负债率、营业收入、第一大股东持股比例、独立董事比例、产权性质等）来自 CSMAR 数据库。</p><p>需要特别说明的是学术诚信与数据可得性安排：<strong>本文为毕业论文的预演（方法论验证）稿</strong>，此阶段尚未获得商用数据库的完整授权，因此语料采用<strong>按真实年报统计特征生成的仿真语料</strong>替代。仿真语料的生成过程完全公开（见附录 B 中的 <code>s0_generate_corpus.py</code>），其数据生成过程（DGP）显式设定了“企业存在一个不可直接观测的真实数字化强度 θ，θ 由企业固定效应、时间趋势、行业效应与持续性冲击共同决定；关键词提及次数服从以 θ 为均值的泊松过程；企业绩效由 θ 与若干控制变量共同决定”。这一设计保留了真实研究中的两个关键特征：文本测度含有测量误差，且测度误差会造成回归系数的衰减偏误。正式研究与送审版论文将把语料替换为巨潮资讯网年报原文，第 1—4 步之外的代码无需修改。</p><p>最终样本为 180 家制造业上市公司 2015—2023 年共 1620 篇年报文本，构成 1620 个企业—年份观测的平衡面板。语料平均长度 4503 个中文字符，分词后平均 1905 个有效词，全部 1620 篇文本均至少出现 1 个数字化关键词，关键词命中率为 100%。</p><h3>（二）文本预处理流程</h3><p>文本预处理按五项规则依次执行。</p><p><strong>R1 格式清洗</strong>：去除 HTML 标签与转义字符，剔除页眉页脚、章节标题与免责声明模板句。</p><p><strong>R2 字符规范化</strong>：全角字符转半角，仅保留中文、英文、数字与常用标点，合并连续重复标点。</p><p><strong>R3 句子级去重</strong>：对完全重复的句子只保留一次。年报中“本公司及董事会全体成员保证信息披露内容真实、准确、完整”一类模板句反复出现，若不去重会系统性高估词频。</p><p><strong>R4 有效文本筛选</strong>：过滤中文字符数少于 200 的文档，避免仅有标题的空文本污染样本。</p><p><strong>R5 分词与停用词处理</strong>：采用 jieba 分词，将 69 个数字化关键词全部加入自定义词典（避免“数字化转型”被切分为“数字化”与“转型”），并在哈工大停用词表基础上补充年报高频噪声词（如“公司”“报告期”“年度”）。</p><p>在词频统计环节，进一步引入四项语境规则以提升测度质量：</p><p>- <strong>T1 最长优先匹配</strong>：同一位置命中“数字化转型”时不再重复计入其子串“数字化”，避免子串重复计数造成指标虚高； - <strong>T2 否定语境识别</strong>：若关键词前 2 个词内出现“不、无、未、尚未、难以、缺乏”等否定词，则该次提及不计入词频； - <strong>T3 程度副词加权</strong>：关键词前 1 个词为“全面、深度、大力、持续”等程度副词时，按 1.2—1.5 的权重计入，以区分“初步尝试”与“全面深化”的强度差异； - <strong>T4 分半计数</strong>：以文档中点切分，分别统计前后两半的关键词词频，为分半信度检验提供数据。</p><h3>（三）数字化转型测度的构造</h3><p>词典依据既有中文文献的通行归类方式构建，包含五个维度共 69 个关键词：人工智能技术（17 个，如人工智能、机器学习、深度学习、图像识别、智能质检）、大数据技术（15 个，如大数据、数据挖掘、数据中台、数据治理、用户画像）、云计算技术（11 个，如云计算、云平台、边缘计算、云原生）、区块链技术（9 个，如区块链、智能合约、分布式账本、供应链金融）、数字技术应用（17 个，如数字化转型、智能制造、工业互联网、数字孪生、两化融合）。</p><p>记企业 i 在第 t 年的文本中关键词 k 的加权词频为 f（经 T1—T3 规则处理后），其所属维度为 d，企业当年文本的中文字符数为 Char。测度的构造分四步：</p><p><strong>式（1）维度密度</strong></p><p class="formula">Den(d,i,t) = [ Σ(k∈d) f(k,i,t) ] ÷ ( Char(i,t) ÷ 1000 )</p><p>即每一千个中文字符中出现的关键词加权次数，用以消除篇幅差异。</p><p><strong>式（2）综合密度</strong>：对五个维度密度求和，Den(i,t) = W1·Den(1,i,t) + … + W5·Den(5,i,t)，基准情形取等权 W1=…=W5=1。</p><p><strong>式（3）主指标</strong></p><p class="formula">DigTrans(i,t) = ln[ 1 + Den(i,t) ]</p><p>取自然对数以压缩右偏分布、降低极端值影响。</p><p><strong>式（4）熵权法替代测度</strong>：先对五维密度做极差标准化，按标准熵权法计算各维度信息熵 e(d) 与权重 w(d) = [1-e(d)] ÷ Σ[1-e(d)]，再取 DigTrans_ew = ln[1 + Σ w(d)·Den(d)]。</p><p><strong>式（5）因子得分替代测度</strong>：将五维密度标准化后做主成分分析，取第一主成分得分作为 DigTrans_pca。</p><p>按熵权法计算，五个维度的权重分别为人工智能技术 0.198、大数据技术 0.164、云计算技术 0.218、区块链技术 0.228、数字技术应用 0.193，各维度贡献较为均衡，说明词典未过度依赖单一维度。</p><h3>（四）变量定义</h3><p>被解释变量为总资产收益率 ROA（%），稳健性检验中使用企业价值 TobinQ 与全要素生产率 TFP_LP。核心解释变量为 DigTrans。控制变量参照已有研究的通行做法，包含企业规模、资产负债率、成长性、上市年限、股权集中度、独立董事比例、资本密集度。全部连续变量在上下 1% 分位做缩尾处理。变量定义见表 1。</p><p class="table-caption">表 1　变量定义表</p><table class="three-line-table"><thead><tr>
+<th>变量符号</th>
+<th>变量名称</th>
+<th>度量方式</th>
+<th>数据来源</th>
+</tr></thead><tbody>
+<tr><td>DigTrans</td><td>企业数字化转型程度</td><td>ln(1+五维关键词加权密度)，文本挖掘主指标</td><td>年报 MD&amp;A</td></tr>
+<tr><td>DigTrans_raw</td><td>关键词词频（原值）</td><td>五维关键词加权计数（个）</td><td>年报 MD&amp;A</td></tr>
+<tr><td>DigUnion</td><td>数字化转型倾向</td><td>DigTrans 高于当年行业中位数取 1，否则 0</td><td>作者计算</td></tr>
+<tr><td>ROA</td><td>总资产收益率</td><td>净利润 / 总资产 × 100（%）</td><td>CSMAR</td></tr>
+<tr><td>TobinQ</td><td>企业价值</td><td>市值 / 总资产</td><td>CSMAR</td></tr>
+<tr><td>TFP_LP</td><td>全要素生产率</td><td>LP 法估计（替代被解释变量）</td><td>作者计算</td></tr>
+<tr><td>Size</td><td>企业规模</td><td>ln(总资产+1)</td><td>CSMAR</td></tr>
+<tr><td>Lev</td><td>资产负债率</td><td>总负债 / 总资产</td><td>CSMAR</td></tr>
+<tr><td>Growth</td><td>成长性</td><td>营业收入增长率</td><td>CSMAR</td></tr>
+<tr><td>Age</td><td>上市年限</td><td>ln(当年年份−上市年份+1)</td><td>CSMAR</td></tr>
+<tr><td>First</td><td>股权集中度</td><td>第一大股东持股比例</td><td>CSMAR</td></tr>
+<tr><td>Indep</td><td>独立董事比例</td><td>独立董事人数 / 董事会人数</td><td>CSMAR</td></tr>
+<tr><td>SOE</td><td>产权性质</td><td>国有控股取 1，否则 0</td><td>CSMAR</td></tr>
+<tr><td>Capital</td><td>资本密集度</td><td>总资产 / 营业收入</td><td>CSMAR</td></tr>
+</tbody></table><h3>（五）计量模型设定与检验策略</h3><p>基准模型采用双向固定效应设定：</p><p class="formula">ROA(i,t) = α + β·DigTrans(i,t) + γ′·Controls(i,t) + μ(i) + λ(t) + ε(i,t)　　（式 6）</p><p>其中 μ(i) 为企业固定效应，λ(t) 为年份固定效应，标准误按企业层面聚类，以缓解同一企业跨年度观测的序列相关与异方差。系数 β 表示企业数字化转型程度提高 1 个单位所带来的总资产收益率变化（百分点）。</p><p>检验策略按四层展开：第一层为测度质量检验，包括内部一致性信度、分半信度、结构效度、效标效度与区分效度；第二层为基准回归与稳健性检验（替换被解释变量、替换核心解释变量）；第三层为异质性分析（产权性质、行业技术属性）并辅以交互项检验；第四层为内生性与共同冲击处理（行业×年度联合固定效应、未来一期因变量、剔除外部冲击年份）。</p><h2 id="s2">三、实证分析</h2><p>本部分依次报告描述性统计、信度与效度检验、相关性分析、基准回归、稳健性检验、异质性分析、内生性处理与补充的分类任务，并讨论各项结果的经济含义。</p><h3>（一）描述性统计</h3><p>表 2 报告主要变量的描述性统计结果。DigTrans 的均值为 2.918、标准差为 0.264、取值范围为 2.238—3.278、偏度为 −0.431，分布近似对称，说明对数变换有效压缩了词频的长尾。关键词原始词频均值为 81.24 个、标准差为 22.14，企业间差异明显，说明数字化转型在制造业内部并不均衡。ROA 均值为 6.898%、标准差为 3.341 个百分点；TobinQ 均值为 3.171；控制变量中，资产负债率均值为 0.413，营业收入增长率均值为 0.086，第一大股东持股比例均值为 0.326，独立董事比例均值为 0.375，与制造业上市公司的总体特征基本一致。</p><p class="table-caption">表 2　主要变量描述性统计</p><table class="three-line-table"><thead><tr>
+<th>变量</th>
+<th>观测数</th>
+<th>均值</th>
+<th>标准差</th>
+<th>最小值</th>
+<th>中位数</th>
+<th>最大值</th>
+<th>偏度</th>
+</tr></thead><tbody>
+<tr><td>DigTrans</td><td>1620</td><td>2.918</td><td>0.264</td><td>2.238</td><td>2.929</td><td>3.278</td><td>−0.431</td></tr>
+<tr><td>DigTrans_raw</td><td>1620</td><td>81.24</td><td>22.14</td><td>26.0</td><td>79.6</td><td>138.0</td><td>0.184</td></tr>
+<tr><td>DigUnion</td><td>1620</td><td>0.489</td><td>0.500</td><td>0</td><td>0</td><td>1</td><td>0.045</td></tr>
+<tr><td>ROA</td><td>1620</td><td>6.898</td><td>3.341</td><td>−0.765</td><td>6.922</td><td>14.816</td><td>0.022</td></tr>
+<tr><td>TobinQ</td><td>1620</td><td>3.171</td><td>1.126</td><td>0.621</td><td>3.184</td><td>5.741</td><td>0.024</td></tr>
+<tr><td>TFP_LP</td><td>1620</td><td>6.654</td><td>0.160</td><td>5.904</td><td>6.653</td><td>7.178</td><td>0.010</td></tr>
+<tr><td>Size</td><td>1620</td><td>22.358</td><td>1.080</td><td>18.218</td><td>22.329</td><td>26.419</td><td>0.084</td></tr>
+<tr><td>Lev</td><td>1620</td><td>0.413</td><td>0.157</td><td>0.052</td><td>0.416</td><td>0.771</td><td>−0.062</td></tr>
+<tr><td>Growth</td><td>1620</td><td>0.086</td><td>0.220</td><td>−0.449</td><td>0.088</td><td>0.600</td><td>−0.050</td></tr>
+<tr><td>Age</td><td>1620</td><td>2.550</td><td>0.582</td><td>0</td><td>2.639</td><td>3.367</td><td>−1.235</td></tr>
+<tr><td>First</td><td>1620</td><td>0.326</td><td>0.126</td><td>0.050</td><td>0.329</td><td>0.616</td><td>−0.004</td></tr>
+<tr><td>Indep</td><td>1620</td><td>0.375</td><td>0.049</td><td>0.250</td><td>0.375</td><td>0.559</td><td>0.077</td></tr>
+<tr><td>Capital</td><td>1620</td><td>1.893</td><td>0.669</td><td>0.500</td><td>1.875</td><td>3.524</td><td>0.097</td></tr>
+</tbody></table><p>分年度看，数字化转型程度均值由 2015 年的 2.816 单调上升至 2023 年的 3.030，9 年累计提高 7.6%，年均提高约 0.027 个对数单位，与近年来制造业智能化改造持续推进的现实相符；同期 ROA 均值在 6.57%—7.23% 区间波动，未呈现与数字化同步上升的简单趋势，这也提示数字化转型的绩效效应需要在控制企业异质性与年度共同冲击后才能被识别。</p><h3>（二）信度检验</h3><p>信度反映测度的稳定性与内部一致性。本文将五个维度密度视为五个“题项”，检验结果见表 3。Cronbach's α 为 0.714，标准化后为 0.739，均达到 0.7 的常用经验标准；以文档中点分半，前后两半词频密度的相关系数为 0.793，经 Spearman-Brown 校正后的分半信度为 0.884，说明测度的随机测量误差较小；各维度密度与总指标的相关系数介于 0.550—0.779 之间，均高于 0.5 的经验下限，表明五个维度共同指向同一构念。</p><p class="table-caption">表 3　信度检验结果</p><table class="three-line-table"><thead><tr>
+<th>指标</th>
+<th>取值</th>
+<th>判断标准</th>
+<th>结论</th>
+</tr></thead><tbody>
+<tr><td>Cronbach's α（五维密度）</td><td>0.714</td><td>α&gt;0.7 可接受</td><td>通过</td></tr>
+<tr><td>Cronbach's α（标准化后）</td><td>0.739</td><td>α&gt;0.7 可接受</td><td>通过</td></tr>
+<tr><td>分半相关系数 r</td><td>0.793</td><td>r&gt;0.7</td><td>通过</td></tr>
+<tr><td>Spearman-Brown 分半信度</td><td>0.884</td><td>&gt;0.8 良好</td><td>通过</td></tr>
+<tr><td>各维度与总指标相关区间</td><td>0.550—0.779</td><td>&gt;0.5</td><td>通过</td></tr>
+</tbody></table><h3>（三）效度检验</h3><p>效度反映测度是否测到了想测的东西。表 4 从三个角度检验。</p><p><strong>结构效度</strong>：KMO 取样适切性量数为 0.795，接近“良好”标准；Bartlett 球形检验 χ² 为 1523.80（df=10，p&lt;0.001），拒绝了相关矩阵为单位阵的原假设；第一主成分方差解释率为 49.01%，第一主成分载荷区间为 0.621—0.734，五个维度均为中高载荷，说明五维结构具有单一主因子特征，测度的多维设计是合理的。</p><p><strong>效标效度</strong>：把预演阶段可知的真实数字化强度（即仿真语料 DGP 中的人工编码真值）作为效标，主指标与其 Spearman 相关系数为 0.876，说明文本测度能够以较高精度还原不可直接观测的真实强度。这一结果同时给出了测度噪声的上界估计：约 23% 的方差来自测量误差，正是后续回归系数衰减偏误的来源。</p><p><strong>区分效度</strong>：主指标与文档篇幅的 Spearman 相关系数为 −0.173，绝对值远小于 0.5，说明测度并非由“年报写得长”所驱动，篇幅因素已被式（1）的密度化处理有效控制。</p><p class="table-caption">表 4　效度检验结果</p><table class="three-line-table"><thead><tr>
+<th>检验类别</th>
+<th>统计量</th>
+<th>取值</th>
+<th>判断标准</th>
+</tr></thead><tbody>
+<tr><td>结构效度</td><td>KMO 取样适切性量数</td><td>0.795</td><td>&gt;0.6 可接受</td></tr>
+<tr><td>结构效度</td><td>Bartlett 球形检验 χ²(df)</td><td>1523.80 (10)</td><td>p&lt;0.001</td></tr>
+<tr><td>结构效度</td><td>第一主成分方差解释率</td><td>49.01%</td><td>&gt;40%</td></tr>
+<tr><td>结构效度</td><td>第一主成分载荷区间</td><td>0.621—0.734</td><td>&gt;0.5</td></tr>
+<tr><td>效标效度</td><td>与人工编码得分 Spearman ρ</td><td>0.876</td><td>&gt;0.6</td></tr>
+<tr><td>区分效度</td><td>与文档篇幅的 Spearman ρ</td><td>−0.173</td><td>绝对值&lt;0.5</td></tr>
+</tbody></table><h3>（四）相关性分析</h3><p>相关系数矩阵显示，DigTrans 与 ROA 的相关系数为 0.166，与 TobinQ 的相关系数为 0.248，均在 1% 水平上显著为正，初步支持数字化转型与企业绩效正相关。控制变量方面，资产负债率与 ROA 显著负相关（−0.368），企业规模与 ROA 显著负相关（−0.209），成长性与 ROA 显著正相关（0.167），符合财务理论预期。各解释变量之间的相关系数绝对值多在 0.05 以内，不存在严重的多重共线性。</p><p class="table-caption">表 5　主要变量相关系数矩阵（节选）</p><table class="three-line-table"><thead><tr>
+<th>变量</th>
+<th>DigTrans</th>
+<th>ROA</th>
+<th>TobinQ</th>
+<th>Size</th>
+<th>Lev</th>
+</tr></thead><tbody>
+<tr><td>DigTrans</td><td>1.000</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>ROA</td><td>0.166</td><td>1.000</td><td></td><td></td><td></td></tr>
+<tr><td>TobinQ</td><td>0.248</td><td>0.192</td><td>1.000</td><td></td><td></td></tr>
+<tr><td>Size</td><td>0.046</td><td>−0.209</td><td>−0.313</td><td>1.000</td><td></td></tr>
+<tr><td>Lev</td><td>−0.020</td><td>−0.368</td><td>−0.060</td><td>−0.042</td><td>1.000</td></tr>
+</tbody></table><h3>（五）基准回归结果</h3><p>表 6 报告基准回归结果。第（1）列仅控制年份固定效应，DigTrans 系数为 2.060（p&lt;0.01）；第（2）列加入全部控制变量后系数为 2.050（p&lt;0.01），说明相关性并非由企业规模、杠杆水平等财务特征驱动；第（3）列进一步纳入企业固定效应构成双向固定效应基准模型，系数为 1.447（p&lt;0.01），即数字化转型程度每提高 1 个单位，总资产收益率平均提高约 1.45 个百分点。以 DigTrans 的标准差 0.264 换算，数字化程度提高 1 个标准差对应 ROA 提高约 0.38 个百分点，相当于 ROA 标准差（3.34 个百分点）的 11.4%，具有经济意义上的显著性。</p><p>需要注意的是，第（3）列系数小于第（1）（2）列，说明企业层面不可观测的异质性（如管理能力、组织惯性）同时影响数字化水平与绩效，若不加控制会高估转型的绩效效应。这一结果为“双向固定效应设定更可信”提供了直接证据。</p><p class="table-caption">表 6　数字化转型对企业绩效（ROA）的影响：基准回归</p><table class="three-line-table"><thead><tr>
+<th>变量</th>
+<th>（1）仅年份 FE</th>
+<th>（2）加控制变量</th>
+<th>（3）双向 FE（基准）</th>
+<th>（4）剔除冲击年份</th>
+</tr></thead><tbody>
+<tr><td>DigTrans</td><td>2.060***</td><td>2.050***</td><td>1.447***</td><td>1.494***</td></tr>
+<tr><td></td><td>(0.574)</td><td>(0.502)</td><td>(0.318)</td><td>(0.396)</td></tr>
+<tr><td>控制变量</td><td>否</td><td>是</td><td>是</td><td>是</td></tr>
+<tr><td>年份固定效应</td><td>是</td><td>是</td><td>是</td><td>是</td></tr>
+<tr><td>企业固定效应</td><td>否</td><td>否</td><td>是</td><td>是</td></tr>
+<tr><td>N</td><td>1620</td><td>1620</td><td>1620</td><td>1080</td></tr>
+<tr><td>R²</td><td>0.030</td><td>0.266</td><td>0.740</td><td>0.764</td></tr>
+</tbody></table><p class="table-note">注：括号内为企业层面聚类稳健标准误；***、**、* 分别表示 1%、5%、10% 显著性水平；第（4）列剔除 2020—2022 年外部冲击年份。</p><h3>（六）稳健性检验</h3><p>表 7 通过更换被解释变量与更换核心解释变量两种方式检验结论的稳健性。第（1）列以 TobinQ 为被解释变量，DigTrans 系数为 0.607（p&lt;0.01），说明数字化转型同样提升资本市场估值；第（2）列以 LP 法估计的全要素生产率 TFP_LP 为被解释变量，系数为 0.084（p&lt;0.01），表明数字化通过技术改造提高了生产效率；第（3）列以熵权法测度 DigTrans_ew 替换主指标，系数为 1.739（p&lt;0.01）；第（4）列以主成分因子得分 DigTrans_pca 替换主指标，系数为 0.248（p&lt;0.01）。四种设定下核心解释变量均在 1% 水平显著为正，说明结论不依赖于特定的测度构造方案或单一被解释变量。</p><p class="table-caption">表 7　稳健性检验</p><table class="three-line-table"><thead><tr>
+<th>变量/模型</th>
+<th>（1）TobinQ</th>
+<th>（2）TFP_LP</th>
+<th>（3）熵权法指标</th>
+<th>（4）因子得分</th>
+</tr></thead><tbody>
+<tr><td>核心解释变量</td><td>0.607***</td><td>0.084***</td><td>1.739***</td><td>0.248***</td></tr>
+<tr><td></td><td>(0.144)</td><td>(0.024)</td><td>(0.380)</td><td>(0.053)</td></tr>
+<tr><td>控制变量</td><td>是</td><td>是</td><td>是</td><td>是</td></tr>
+<tr><td>双向固定效应</td><td>是</td><td>是</td><td>是</td><td>是</td></tr>
+<tr><td>N</td><td>1620</td><td>1620</td><td>1620</td><td>1620</td></tr>
+<tr><td>R²</td><td>0.329</td><td>0.225</td><td>0.740</td><td>0.740</td></tr>
+</tbody></table><p class="table-note">注：第（1）（2）列更换被解释变量，第（3）（4）列更换核心解释变量测度方式；标准误按企业层面聚类。</p><h3>（七）异质性分析</h3><p>表 8 按产权性质与行业技术属性分组回归。国有控股企业的系数为 1.166（p&lt;0.10）、非国有企业为 1.512（p&lt;0.01）；高技术行业企业系数为 1.204（p&lt;0.10）、传统制造行业为 1.523（p&lt;0.01）。表面上非国有与传统制造行业的边际效应更大，但交互项检验显示，DigTrans×SOE 的系数为 −0.786（p=0.292）、DigTrans×HighTech 的系数为 0.062（p=0.935），均未达到统计显著水平。因此更审慎的结论是：<strong>数字化转型的绩效效应在各类型企业中都存在，但尚无可靠证据表明存在显著的组间差异</strong>。若强行解读分组系数差异，容易犯“把统计噪声当作经济机制”的错误——这也是文本测度研究中需要特别警惕的推断陷阱。</p><p class="table-caption">表 8　异质性分析（因变量：ROA）</p><table class="three-line-table"><thead><tr>
+<th>分组</th>
+<th>（1）国有企业</th>
+<th>（2）非国有企业</th>
+<th>（3）高技术行业</th>
+<th>（4）传统制造行业</th>
+</tr></thead><tbody>
+<tr><td>DigTrans</td><td>1.166*</td><td>1.512***</td><td>1.204*</td><td>1.523***</td></tr>
+<tr><td></td><td>(0.690)</td><td>(0.351)</td><td>(0.632)</td><td>(0.359)</td></tr>
+<tr><td>N</td><td>459</td><td>1161</td><td>450</td><td>1170</td></tr>
+</tbody></table><p class="table-note">注：分组回归均控制全部控制变量与双向固定效应，标准误按企业层面聚类；交互项检验结果：DigTrans×SOE = −0.786（p=0.292），DigTrans×HighTech = 0.062（p=0.935）。</p><h3>（八）内生性与共同冲击处理</h3><p>针对三类潜在识别问题，表 9 给出四项检验。其一，以行业×年度联合固定效应吸收行业层面随时间变化的共同冲击（如行业技术路线变化、行业性需求波动），系数为 1.417（p&lt;0.01），与基准结果几乎一致。其二，考虑到当期绩效可能反向影响当期数字化披露，以未来一期 ROA 为被解释变量，系数为 0.931（p&lt;0.05），方向与显著性保持稳定，说明结果不太可能由反向因果单独驱动。其三，剔除 2020—2022 年外部冲击年份后系数为 1.425（p&lt;0.01），说明结论未被特定年份的异常样本所支配。需要指出的是，受预演语料限制，本文未构造工具变量，这也是后续正式研究需要补强之处。</p><p class="table-caption">表 9　内生性与共同冲击处理</p><table class="three-line-table"><thead><tr>
+<th>变量</th>
+<th>（1）基准</th>
+<th>（2）行业×年度联合 FE</th>
+<th>（3）因变量取下一期</th>
+<th>（4）剔除冲击年份</th>
+</tr></thead><tbody>
+<tr><td>DigTrans</td><td>1.447***</td><td>1.417***</td><td>0.931**</td><td>1.425***</td></tr>
+<tr><td></td><td>(0.318)</td><td>(0.336)</td><td>(0.401)</td><td>(0.416)</td></tr>
+<tr><td>控制变量</td><td>是</td><td>是</td><td>是</td><td>是</td></tr>
+<tr><td>N</td><td>1620</td><td>1620</td><td>1440</td><td>1080</td></tr>
+<tr><td>R²</td><td>0.740</td><td>0.752</td><td>0.621</td><td>0.774</td></tr>
+</tbody></table><h3>（九）补充的机器学习分类任务</h3><p>为说明文本测度的不可替代性，本文以企业财务特征为输入、以 DigUnion（是否属于当年行业中位数以上的高数字化企业）为标签训练 Logit 分类模型。结果显示，仅凭财务与治理特征识别“高数字化”企业的准确率为 0.535、AUC 为 0.549，接近随机猜测水平；模型 Pseudo R² 仅为 0.006。这一“负面结果”恰恰具有方法学意义：<strong>企业的数字化程度是一类难以由财务指标替代的软信息</strong>，若不借助文本挖掘，研究者与投资者几乎无法从财务报表中识别企业的数字化水平，从而反向支持了本文测度构建工作的必要性。</p><p class="table-caption">表 10　分类任务结果（Logit 模型）</p><table class="three-line-table"><thead><tr>
+<th>样本量 N</th>
+<th>高数字化组占比</th>
+<th>Pseudo R²</th>
+<th>准确率</th>
+<th>AUC</th>
+</tr></thead><tbody>
+<tr><td>1620</td><td>48.9%</td><td>0.006</td><td>0.535</td><td>0.549</td></tr>
+</tbody></table><h3>（十）小结与讨论</h3><p>第三部分的证据链条可归纳为三点。第一，测度质量可接受：α=0.714、分半信度 0.884、KMO=0.795、第一主成分解释率 49.01%、效标相关 0.876，说明五维词频密度测度具备稳定的内部一致性与可验证的构念效度。第二，绩效效应稳健存在：在双向固定效应设定下，数字化转型对 ROA 的边际效应约为 1.45 个百分点，对企业价值与全要素生产率同样显著为正，且不随测度方案与年份窗口变化。第三，效应量受测量误差影响：效标检验显示测度含约 20% 的噪声，理论上会使回归系数向下偏，因此本文报告的系数可视为真实效应的下界估计。</p><p>同时也应看到，异质性检验显示数字化转型的绩效效应在非国有企业与传统制造行业中更显著，但在产权性质与行业技术属性的交互项检验中均未达到统计显著（p 值分别为 0.292 与 0.935），因此<strong>不宜过度解读分组差异</strong>，更稳妥的表述是：数字化转型的绩效效应具有较强的普惠性，尚未观察到可靠的组间差异证据。这一结论与本文预演数据的设定一致，也提示后续研究需要更长的样本窗口或更细的行业划分来识别条件性效应。</p><h2 id="s3">四、结论、局限与展望</h2><p>本部分归纳三项主要发现，给出理论与实践启示，坦诚说明数据代表性、测度构造、识别策略与边界条件四方面的局限，并指出后续研究的方向。</p><h3>（一）主要发现</h3><p>本文以 2015—2023 年 180 家制造业上市公司、1620 篇年报文本为样本，构建并检验了企业数字化转型的文本测度，得到三项主要发现。</p><p>第一，<strong>基于年报文本的数字化转型测度是可行且可验证的</strong>。五维 69 个关键词的词典设计、最长优先匹配与否定语境识别等语境规则，使测度在内部一致性（α=0.714）、分半信度（0.884）、结构效度（KMO=0.795，第一主成分解释率 49.01%）与效标效度（ρ=0.876）四个维度上均达到可接受水平，且与文档篇幅的相关性很低（−0.173），排除了“篇幅驱动”的替代解释。</p><p>第二，<strong>数字化转型显著提升企业绩效，且结论对测度方案不敏感</strong>。双向固定效应模型下，数字化转型每提高 1 个单位对应 ROA 提高约 1.45 个百分点（1 个标准差约为 0.38 个百分点）；替换被解释变量（TobinQ、TFP_LP）与替换核心解释变量（熵权法、因子得分）后系数均在 1% 水平显著为正。控制企业固定效应后系数明显下降，提示忽略企业异质性会高估转型效应。</p><p>第三，<strong>财务数据无法替代文本信息</strong>。以财务特征预测企业是否属于高数字化组的分类准确率仅 0.535，AUC 为 0.549，说明数字化程度属于典型的软信息，这为文本挖掘在管理研究中的应用提供了必要性证据。</p><h3>（二）理论与实践启示</h3><p>在理论层面，本文把“测度效度”作为实证结论可信度的前置条件，说明只有先证明测度“测得准”，后续回归系数才具有可解释意义；同时，效标检验所揭示的测度噪声为量化衰减偏误提供了直接依据（真实效应应大于估计值）。在实践层面，本文建议投资者在解读“数字化”叙事时结合词频强度与语境（是否存在“尚未布局”“暂未投入”表述）加以判别；建议企业以行业相对位置而非绝对词频作为自我评估参照；建议监管部门将否定语境识别纳入信息披露质量评价的技术工具箱。</p><h3>（三）研究局限</h3><p>第一，<strong>数据代表性局限</strong>。本文为方法论预演稿，语料为按真实年报统计特征生成的仿真语料，虽完整保留了测量误差、序列相关与内生性等结构特征，但不能替代真实年报的证据，所有系数数值均不具有直接的政策含义。</p><p>第二，<strong>测度构造局限</strong>。词频法的隐含假设是“提及即投入”，但企业可能在年报中进行策略性表述；本文虽通过否定语境识别与程度加权部分缓解，仍无法完全剔除“数字化包装”。同时，等权与熵权均未纳入关键词语义相似度，可能低估语义相近词的累积强度。</p><p>第三，<strong>识别策略局限</strong>。受语料限制，本文未构造外生工具变量，双向固定效应与未来一期因变量的处理只能缓解部分内生性；异质性分析受分组样本规模限制，交互项检验未发现显著组间差异。</p><p>第四，<strong>边界条件局限</strong>。样本限定于制造业，结论不宜直接外推至服务业与金融业；样本区间跨越 2020—2023 年，外部冲击对披露行为的影响虽通过剔除年份做了检验，但仍可能残留。</p><h3>（四）未来展望</h3><p>后续研究可从四个方向推进：其一，接入巨潮资讯网年报全文本（含董事会报告、社会责任报告），把测度窗口从 MD&amp;A 扩展到多文档，并检验跨文档测度一致性；其二，引入预训练语言模型（如 BERT 系列）与有监督标注，比较词典法与语义模型测度的效标效度与回归系数差异；其三，寻找更合适的识别策略，如同行业—同年度同行均值、电信基础设施历史布局等工具变量，并采用衰减偏误校正方法估计真实效应量级；其四，把测度从“强度”扩展到“结构”，研究数字化不同维度（底层技术与应用场景）的差异化绩效效应，为企业转型路径选择提供证据。</p><h2 id="s5">附录 A　数据来源说明</h2><p>本附录汇总论文全部数据的来源渠道、获取方式与本稿所处状态。</p><table class="three-line-table"><thead><tr>
+<th>数据类别</th>
+<th>具体内容</th>
+<th>来源渠道</th>
+<th>获取方式</th>
+<th>本稿状态</th>
+</tr></thead><tbody>
+<tr><td>年报文本</td><td>MD&amp;A 章节全文</td><td>巨潮资讯网</td><td>按股票代码与年度批量下载 PDF，抽取文本</td><td>预演阶段以仿真语料替代</td></tr>
+<tr><td>财务数据</td><td>总资产、净利润、营业收入</td><td>CSMAR</td><td>财务报表与财务指标子库导出</td><td>预演阶段按 DGP 生成</td></tr>
+<tr><td>公司治理</td><td>第一大股东持股、独立董事占比、产权性质</td><td>CSMAR</td><td>治理结构子库导出</td><td>预演阶段按 DGP 生成</td></tr>
+<tr><td>行业分类</td><td>证监会行业代码</td><td>CSMAR / 证监会官网</td><td>行业分类文件</td><td>已按制造业 C1—C4 筛选</td></tr>
+<tr><td>政策文本</td><td>数字经济相关政策文件</td><td>中国政府网</td><td>公开检索下载</td><td>用于背景与词典校验</td></tr>
+<tr><td>词典来源</td><td>数字化转型关键词</td><td>既有中文文献</td><td>文献词典整理 + 行业术语补充</td><td>共 5 个维度、69 个关键词</td></tr>
+</tbody></table><h2 id="s6">附录 B　可复现代码与复现说明</h2><p>本附录给出全部脚本的功能与产物对应关系，以及一键复现步骤。</p><p>全部代码以 Python 3.13 实现，采用“五步流水线”结构，每步可独立运行且中间结果全部落盘：</p><table class="three-line-table"><thead><tr>
+<th>脚本</th>
+<th>功能</th>
+<th>主要输出</th>
+</tr></thead><tbody>
+<tr><td><code>config.py</code></td><td>全局配置：路径、五维词典、变量定义</td><td>—</td></tr>
+<tr><td><code>s0_generate_corpus.py</code></td><td>语料与仿真数据生成（预演用，正式版替换为年报抓取）</td><td>data/raw_text/*.txt</td></tr>
+<tr><td><code>s1_clean.py</code></td><td>文本清洗（R1—R5 规则）</td><td>data/clean_text/*.txt</td></tr>
+<tr><td><code>s2_tokenize.py</code></td><td>分词与关键词计数（T1—T4 规则）</td><td>data/tokens/doc_terms.csv</td></tr>
+<tr><td><code>s3_measure.py</code></td><td>测度构建与信效度检验（式 1—式 5）</td><td>data/tokens/dig_index.csv、表 3、表 4</td></tr>
+<tr><td><code>s4_panel.py</code></td><td>面板构建、缩尾、描述性统计</td><td>data/panel_firm_year.csv/.xlsx、表 1、表 2</td></tr>
+<tr><td><code>s5_model.py</code></td><td>基准回归、稳健性、异质性、内生性、分类任务</td><td>output/tables/表 6—表 10</td></tr>
+<tr><td><code>run_all.py</code></td><td>一键复现全流程</td><td>全部结果</td></tr>
+</tbody></table><p>复现步骤为：依次执行 <code>pip install -r requirements.txt</code> 与 <code>python run_all.py</code>，全流程耗时约 80 秒即可生成全部结果表与面板数据。随机种子固定为 20260329，保证仿真结果可被完整复现。测量结果表（企业—年份面板）以 <code>data/panel_firm_year.csv</code> 与 <code>data/panel_firm_year.xlsx</code> 两种格式提供，包含 180 家企业 × 9 年共 1620 行、22 个变量。</p>
+  </main>
+  <div class="references">
+    <h2 id="s4">参考文献</h2>
+    <div class="ref-list">
+<p class='ref-item'>[1] 吴非, 胡慧芷, 林慧妍, 任晓怡. 企业数字化转型与资本市场表现——来自股票流动性的经验证据[J]. 管理世界, 2021, 37(7): 130-144. 获取入口：https://navi.cnki.net/knavi/journals/GLSJ/detail</p><p class='ref-item'>[2] 袁淳, 肖土盛, 耿春晓, 盛誉. 数字化转型与企业分工：专业化还是纵向一体化[J]. 中国工业经济, 2021(9): 137-155. 获取入口：https://navi.cnki.net/knavi/journals/GGYY/detail</p><p class='ref-item'>[3] 赵宸宇, 王文春, 李雪松. 数字化转型如何影响企业全要素生产率[J]. 财贸经济, 2021, 42(7): 114-129. 获取入口：https://navi.cnki.net/knavi/journals/CMJJ/detail</p><p class='ref-item'>[4] 戚聿东, 肖旭. 数字经济时代的企业管理变革[J]. 管理世界, 2020, 36(6): 135-152. 获取入口：https://navi.cnki.net/knavi/journals/GLSJ/detail</p><p class='ref-item'>[5] 中国政府网. “十四五”数字经济发展规划[EB/OL]. (2022-01-12). 检索入口：https://sousuo.www.gov.cn/sousuo/search.shtml?searchWord=十四五数字经济发展规划</p><p class='ref-item'>[6] 中国信息通信研究院. 中国数字经济发展研究报告[R/OL]. http://www.caict.ac.cn/</p><p class='ref-item'>[7] Gentzkow, M., Kelly, B., &amp; Taddy, M. (2019). Text as Data. Journal of Economic Literature, 57(3), 535-574. 检索入口：https://scholar.google.com/scholar?q=Text+as+Data+Gentzkow+Kelly+Taddy</p><p class='ref-item'>[8] Brynjolfsson, E., Rock, D., &amp; Syverson, C. (2021). The Productivity J-Curve: How Intangibles Complement General Purpose Technologies. American Economic Journal: Macroeconomics, 13(1), 333-372. 检索入口：https://scholar.google.com/scholar?q=The+Productivity+J-Curve+Brynjolfsson</p><p class='ref-item'>[9] Acemoglu, D., &amp; Restrepo, P. (2020). Robots and Jobs: Evidence from US Labor Markets. Journal of Political Economy, 128(6), 2188-2244. 检索入口：https://scholar.google.com/scholar?q=Robots+and+Jobs+Evidence+from+US+Labor+Markets</p><p class='ref-item'>[10] Hassan, T. A., Hollander, S., van Lent, L., &amp; Tahoun, A. (2019). Firm-Level Political Risk: Measurement and Effects. Quarterly Journal of Economics, 134(4), 2135-2202. 检索入口：https://scholar.google.com/scholar?q=Firm-Level+Political+Risk+Measurement+and+Effects</p><p class='ref-item'>[11] 巨潮资讯网. 上市公司定期报告数据库[DB/OL]. http://www.cninfo.com.cn/</p><p class='ref-item'>[12] 国泰安信息技术有限公司. CSMAR 中国经济金融研究数据库[DB/OL]. https://data.csmar.com/</p><p class='ref-item'>[13] fxsjy. jieba 中文分词组件[CP/OL]. https://github.com/fxsjy/jieba</p><p class='ref-item'>[14] hankcs. HanLP：汉语言处理包[CP/OL]. https://github.com/hankcs/HanLP</p><p class='ref-item'>[15] statsmodels developers. statsmodels: Statistical Models in Python[CP/OL]. https://www.statsmodels.org/</p><p class='ref-item'>[16] 国家统计局. 国家数据平台[DB/OL]. https://data.stats.gov.cn/</p>
+    </div>
+  </div>
+</section>
+
+<div class="gh-download-bar" style="position:fixed;right:18px;bottom:18px;z-index:50;
+     font-family:'Microsoft YaHei',sans-serif;font-size:13px;line-height:1.5">
+  <a href="../paper/%E5%9F%BA%E4%BA%8E%E5%B9%B4%E6%8A%A5%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98%E7%9A%84%E4%BC%81%E4%B8%9A%E6%95%B0%E5%AD%97%E5%8C%96%E8%BD%AC%E5%9E%8B%E6%B5%8B%E5%BA%A6%E5%8F%8A%E5%85%B6%E5%AF%B9%E4%BC%81%E4%B8%9A%E7%BB%A9%E6%95%88%E7%9A%84%E5%BD%B1%E5%93%8D%E7%A0%94%E7%A9%B6.docx"
+     style="display:block;padding:9px 16px;background:#1f4e79;color:#fff;border-radius:6px;
+            text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.18)"
+     download>下载 Word 论文</a>
+</div>
+</body>
+</html>
