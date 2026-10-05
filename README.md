@@ -5,6 +5,12 @@
 作者：王晓珂　202364029　大数据管理与应用（2023 级）
 稿件性质：**毕业论文预演稿**（方法论验证稿）
 
+**在线地址**
+
+- 网页版论文（浏览器直接阅读排版稿）→ <https://pineapplesliceer.github.io/digital-transformation-nlp-thesis/>
+- Word 论文下载 → [`paper/基于年报文本挖掘的企业数字化转型测度及其对企业绩效的影响研究.docx`](paper/基于年报文本挖掘的企业数字化转型测度及其对企业绩效的影响研究.docx)
+- 在线读正文（Markdown） → [`paper/论文正文.md`](paper/论文正文.md)
+
 ---
 
 ## 一句话说明
